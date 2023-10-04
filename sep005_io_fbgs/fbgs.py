@@ -6,6 +6,7 @@ from typing import Union
 
 import numpy as np
 import pandas as pd
+from pytz import utc
 
 
 class FBG(object):
@@ -39,8 +40,11 @@ class FBG(object):
         for idx, row in df.iterrows():
             timestamp_i = datetime.datetime.strptime(row['Date'], dt_format)
             if timestamp_i > timestamp:
-                fs = (timestamp_i-timestamp).total_seconds()/(idx+1)
+                fs = idx/(timestamp_i-timestamp).total_seconds()
                 break
+
+        # Convert timestamp to UTC
+        timestamp = timestamp.astimezone(utc)
 
         channels = []
         for c in df.columns:
