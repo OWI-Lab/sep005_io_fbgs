@@ -1,0 +1,4 @@
+# Package requirements for users
+numpy>=1.11.0
+sdypy-sep005>=0.1.0
+pytz
