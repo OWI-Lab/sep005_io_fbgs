@@ -2,3 +2,4 @@
 numpy>=1.11.0
 sdypy-sep005>=0.1.0
 pytz
+pandas

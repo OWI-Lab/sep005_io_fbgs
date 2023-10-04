@@ -7,7 +7,7 @@ base_path = os.path.dirname(__file__)
 # Read the project version from "__init__.py"
 regexp = re.compile(r'.*__version__ = [\'\"](.*?)[\'\"]', re.S)
 
-init_file = os.path.join(base_path, 'sdypy_io_tdms', '__init__.py')
+init_file = os.path.join(base_path, 'sep005_io_fbgs', '__init__.py')
 with open(init_file, 'r') as f:
     module_content = f.read()
 
@@ -25,18 +25,18 @@ with open('README.rst', 'r') as f:
 
 if __name__ == '__main__':
     setup(
-        name='sdypy_io_tdms',
-        description='TDMS file read and write functions compliant with SDyPy SEP5',
+        name='sep005_io_fbgs',
+        description='TDMS file read functions compliant with SDyPy SEP005',
         long_description=readme,
         license='MIT license',
-        url='https://github.com/sdypy',
+        url='https://github.com/OWI-Lab',
         version=version,
         author='Wout Weijtjens',
         author_email='wout.weijtjens@vub.be',
         maintainer='Wout Weijtjens',
         maintainer_email='wout.weijtjens@vub.be',
-        keywords=['io','tdms','SEP5'],
-        packages=['sdypy_io_tdms'],
+        keywords=['io','fbgs','SEP005'],
+        packages=['sep005_io_fbgs'],
         classifiers=['Development Status :: 3 - Alpha',
                      'Intended Audience :: Developers',
                      'Programming Language :: Python :: 3.6']
