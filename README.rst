@@ -9,7 +9,11 @@ Using the package
 
     .. code-block:: python
 
-        from sdypy_io_tdms import read_tdms
+        from sep005_io_fbgs import read_fbgs
 
         file_path = # Path to the tdms file of interest
-        signals = read_tdms(file_path)
+        signals = read_fbgs(file_path)
+
+Acknowledgements
+----------------
+This package was developed in the framework of the Interreg Smart Circular Bridge project
