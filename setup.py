@@ -26,7 +26,7 @@ with open('README.rst', 'r') as f:
 if __name__ == '__main__':
     setup(
         name='sep005_io_fbgs',
-        description='TDMS file read functions compliant with SDyPy SEP005',
+        description='FBGS file read functions compliant with SDyPy SEP005',
         long_description=readme,
         license='MIT license',
         url='https://github.com/OWI-Lab',

@@ -12,7 +12,10 @@ from pytz import utc
 class FBG(object):
 
     def __init__(self, channels:list, error_status=None):
-        self.channels = channels
+        """
+        Initialize a FBG reader object
+        """
+        self.channels = channels # SEP005 compliant channel objects
         self.error_status = None
 
 
@@ -20,7 +23,7 @@ class FBG(object):
     @classmethod
     def from_df(cls, df:pd.DataFrame, mode='engineering_units', dt_format='%Y-%m-%dT%H:%M:%S%z'):
         """
-
+        Import FBGS data from a dataframe
         """
         if mode == 'engineering_units' or mode == 'eu':
             pass # do Nothing
