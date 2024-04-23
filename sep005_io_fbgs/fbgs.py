@@ -21,9 +21,10 @@ class FBG(object):
 
 
     @classmethod
-    def from_df(cls, df:pd.DataFrame, mode='engineering_units', dt_format='%Y-%m-%dT%H:%M:%S%z'):
+    def from_df(cls, df:pd.DataFrame, mode='engineering_units', dt_format='%Y-%m-%dT%H:%M:%S%z', qa:bool=True):
         """
         Import FBGS data from a dataframe
+
         """
         if mode == 'engineering_units' or mode == 'eu':
             pass # do Nothing
@@ -40,11 +41,24 @@ class FBG(object):
         timestamp = datetime.datetime.strptime(df['Date'][0], dt_format)
 
         # FBGS data sometimes has a bad timestamping, e.g. only to second precision.
-        for idx, row in df.iterrows():
-            timestamp_i = datetime.datetime.strptime(row['Date'], dt_format)
-            if timestamp_i > timestamp:
-                fs = idx/(timestamp_i-timestamp).total_seconds()
-                break
+        dt_e = datetime.datetime.strptime(df['Date'].iloc[-1], dt_format).replace(microsecond=0) \
+                + datetime.timedelta(seconds=1) # Floor to the second then add 1
+        duration = (dt_e-timestamp).total_seconds()  # Due to the rounding to second precision this
+        fs = round(len(df)/duration, 2) # Assumption: Sampling frequency is defined up to 2 decimal points
+
+
+
+        if duration*fs != len(df):
+            warnings.warn(
+                f'QA: Inconsistent number of samples found ({len(df)}) for estimated sampling frequency of {fs},'
+                f' set qa to False if you want to still consider this file.',
+                UserWarning
+            )
+            if qa:
+                # Failed QA: Returning empty
+                return cls(channels=[], error_status=error_status)
+
+
 
         # Convert timestamp to UTC
         timestamp = timestamp.astimezone(utc)
@@ -65,10 +79,11 @@ class FBG(object):
         return cls(channels=channels, error_status=error_status)
 
 
-def read_fbgs(path: Union[str, Path]) -> list:
+def read_fbgs(path: Union[str, Path], qa:bool = True) -> list:
     """
     Primary function to read fbgs files based on path
 
+    qa : Quality assurance applied, rejecting files with a bad length. When set to False this check is skipped
 
     """
     if not os.path.isfile(path):
@@ -77,7 +92,7 @@ def read_fbgs(path: Union[str, Path]) -> list:
         return signals
 
     df = _open_fbgs_file(path, sep='\t')
-    fbg = FBG.from_df(df)
+    fbg = FBG.from_df(df, qa=qa)
 
     return fbg.channels
 
